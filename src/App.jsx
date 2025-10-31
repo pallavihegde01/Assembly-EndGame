@@ -1,9 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { languages } from "./constants/languages";
 import { getFarewellText, getRandomWord } from "./components/utils";
 import Confetti from "react-confetti";
 
 const App = () => {
+
+  const [theme, setTheme] = useState("light");
+
+const toggleTheme = () => {
+  setTheme((prev) => (prev === "light" ? "dark" : "light"));
+};
+
+useEffect(() => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  setTheme(savedTheme);
+}, []);
+
+useEffect(() => {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  localStorage.setItem("theme", theme);
+}, [theme]);
+
   const [currentWord, setCurrentWord] = useState(() => getRandomWord());
   const [currentLetters, setCurrentLetters] = useState([]);
 
@@ -68,13 +85,13 @@ const App = () => {
           <span
             className={`px-3 py-1 rounded text-sm md:text-base font-medium
                       bg-neutral-800 text-white
-                      shadow-inner`}
+                      shadow-inner dark:bg-neutral-400`}
           >
             💀
           </span>
         ) : (
           <span
-            className="px-3 py-1 rounded text-sm md:text-base font-medium"
+            className="px-3 py-1 rounded text-sm md:text-base font-medium "
             style={{
               backgroundColor: lang.backgroundColor,
               color: lang.color,
@@ -108,11 +125,21 @@ const App = () => {
   });
 
   return (
-    <div className="h-screen bg-white flex flex-col justify-between items-center py-4 md:py-8 px-4">
+    <div className={`${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} 
+                  h-screen flex flex-col justify-between items-center py-4 md:py-8 px-4 transition-colors duration-300`}>
+
       {/* Header Section */}
+      <button
+  onClick={toggleTheme}
+  className="absolute top-4 right-4 px-4 py-2 rounded-md shadow-md 
+             bg-gray-200 text-gray-900 hover:bg-gray-300
+             dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+>
+  {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+</button>
       <div className="text-center">
         <h1 className="font-semibold text-3xl md:text-5xl">Assembly EndGame</h1>
-        <p className="text-lg md:text-xl text-gray-700 mt-2 max-w-2xl">
+        <p className="text-lg md:text-xl text-gray-500 dark:text-gray-00 mt-2 max-w-2xl">
           Guess the word within 8 attempts to keep the programming world safe
           from Assembly!
         </p>
@@ -158,12 +185,12 @@ const App = () => {
       <div className="flex flex-wrap justify-center my-5">{langElements}</div>
 
       {/* Current Word Display */}
-      <div className="px-6 py-4 bg-gray-100 shadow-md rounded-lg flex justify-center items-center">
+      <div className="px-6 py-4 bg-gray-100  shadow-md rounded-lg flex justify-center items-center">
         {letterElements}
       </div>
 
       {/* Keyboard Section */}
-      <div className="mt-6 bg-yellow-50 p-6 rounded-lg shadow-md flex flex-wrap justify-center gap-2">
+      <div className="mt-6 bg-yellow-50  p-6 rounded-lg shadow-md flex flex-wrap justify-center gap-2">
         {keyboardElements}{" "}
       </div>
 
