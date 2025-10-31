@@ -4,22 +4,21 @@ import { getFarewellText, getRandomWord } from "./components/utils";
 import Confetti from "react-confetti";
 
 const App = () => {
-
   const [theme, setTheme] = useState("light");
 
-const toggleTheme = () => {
-  setTheme((prev) => (prev === "light" ? "dark" : "light"));
-};
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
-useEffect(() => {
-  const savedTheme = localStorage.getItem("theme") || "light";
-  setTheme(savedTheme);
-}, []);
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+  }, []);
 
-useEffect(() => {
-  document.documentElement.classList.toggle("dark", theme === "dark");
-  localStorage.setItem("theme", theme);
-}, [theme]);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const [currentWord, setCurrentWord] = useState(() => getRandomWord());
   const [currentLetters, setCurrentLetters] = useState([]);
@@ -125,18 +124,23 @@ useEffect(() => {
   });
 
   return (
-    <div className={`${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} 
-                  h-screen flex flex-col justify-between items-center py-4 md:py-8 px-4 transition-colors duration-300`}>
-
+    <div
+      className={`${
+        theme === "dark"
+          ? "bg-gray-900 text-gray-100"
+          : "bg-white text-gray-900"
+      } 
+                  h-screen flex flex-col justify-between items-center py-4 md:py-8 px-4 transition-colors duration-300`}
+    >
       {/* Header Section */}
       <button
-  onClick={toggleTheme}
-  className="absolute top-4 right-4 px-4 py-2 rounded-md shadow-md 
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 px-4 py-2 rounded-md shadow-md 
              bg-gray-200 text-gray-900 hover:bg-gray-300
              dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
->
-  {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
-</button>
+      >
+        {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+      </button>
       <div className="text-center">
         <h1 className="font-semibold text-3xl md:text-5xl">Assembly EndGame</h1>
         <p className="text-lg md:text-xl text-gray-500 dark:text-gray-00 mt-2 max-w-2xl">
@@ -158,7 +162,7 @@ useEffect(() => {
           className={`w-full max-w-xs md:max-w-lg rounded-xl shadow-md px-6 py-5 text-white
                 ${isGameWon ? "bg-green-500" : "bg-red-500"}`}
         >
-          {isGameWon && <Confetti recycle={false} numberOfPieces={1000}/>}
+          {isGameWon && <Confetti recycle={false} numberOfPieces={1000} />}
           <div className="flex flex-col items-center text-center">
             {isGameWon ? (
               <>
